@@ -42,10 +42,5 @@ def Merge(sortedA , sortedB):
     return result
 
 
-
-
-
-
-
 sortedArray = MergeSort([2,1,4,0,9,7,6, -8])
 print(sortedArray)
