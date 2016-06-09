@@ -5,9 +5,9 @@
 
 # Google's Python Class
 # http://code.google.com/edu/languages/google-python-class/
-
+from bs4 import BeautifulSoup
 import sys
-import re
+# import re
 
 """Baby Names exercise
 
@@ -34,35 +34,32 @@ Suggested milestones for incremental development:
  -Fix main() to use the extract_names list
 """
 
+
 def extract_names(filename):
-  """
-  Given a file name for baby.html, returns a list starting with the year string
-  followed by the name-rank strings in alphabetical order.
-  ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
-  """
-  # +++your code here+++
-  return
+    return
 
 
 def main():
-  # This command-line parsing code is provided.
-  # Make a list of command line arguments, omitting the [0] element
-  # which is the script itself.
-  args = sys.argv[1:]
+    args = sys.argv[1:]
 
-  if not args:
-    print 'usage: [--summaryfile] file [file ...]'
-    sys.exit(1)
+    if not args:
+        print 'usage: [--summaryfile] file [file ...]'
+        sys.exit(1)
+    fname = open(args[0], 'r')
+    html = fname.read()
+    parsed_html = BeautifulSoup(html, 'html.parser')
+    year_string = parsed_html.body.find('h3').text
+    remove_list = ['popularity', 'in']
+    year_word_list = year_string .split()
+    year = ' '.join(
+      [i for i in year_word_list if i.lower() not in remove_list])
+    print year
+    table = parsed_html.body.find('table', attrs={'bordercolor': '#aaabbb'})
+    rows = table.find_all('tr', attrs={'align': 'right'})
+    for row in rows:
+        for cell in row.find_all('td'):
+            print 'args'
+            print cell.get_text()
 
-  # Notice the summary flag and remove it from args if it is present.
-  summary = False
-  if args[0] == '--summaryfile':
-    summary = True
-    del args[0]
-
-  # +++your code here+++
-  # For each filename, get the names, then either print the text output
-  # or write it to a summary file
-  
 if __name__ == '__main__':
-  main()
+    main()
